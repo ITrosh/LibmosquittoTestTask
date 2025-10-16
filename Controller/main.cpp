@@ -4,15 +4,12 @@
 #include "Controller.h"
 #include "Utils.h"
 #include <mosquitto.h>
-#include <cstdio>
-#include <string>
-#include <fstream>
+//#include <cstdio>
+//#include <string>
 #include <iostream>
 #include <memory>
 //#include <csignal>
 #include <iomanip>
-
-constexpr std::string_view TEMPERATURE_FILE = "../../Controller/resource/target_temperature.conf";
 
 //void on_connect(struct mosquitto* mosq, void* obj, int rc) {
 //    printf("ID: %d\n", * (int*) obj);
@@ -28,14 +25,12 @@ constexpr std::string_view TEMPERATURE_FILE = "../../Controller/resource/target_
 //    printf("New message with topic %s: %s\n", msg->topic, (char *) msg->payload);
 //}
 
-ApplicationState readTargetTemperature(double& targetTemperature);
-
 int main() {
 //    std::signal(SIGINT, signal_handler);  // Обработка Ctrl+C
 //    std::signal(SIGTERM, signal_handler); // Обработка сигнала завершения
 
     double targetTemperature = 0.0;
-    ApplicationState applicationState = readTargetTemperature(targetTemperature);
+    ApplicationState applicationState = readTargetTemperature(TEMPERATURE_FILE.data(), targetTemperature);
 
     if (applicationState == ApplicationState::Success) {
         std::cout << "Target temperature: " << std::fixed << std::setprecision(1) << targetTemperature << std::endl;
@@ -72,31 +67,4 @@ int main() {
 
     printApplicationState(applicationState);
     return static_cast<int>(applicationState);
-}
-
-ApplicationState readTargetTemperature(double& targetTemperature) {
-    std::ifstream file(TEMPERATURE_FILE.data());
-
-    if (file.is_open()) {
-        std::string line;
-        std::getline(file, line);
-        file.close();
-
-        size_t pos = line.find('=');
-        if (pos != std::string::npos && line.substr(0, pos) == "target_temperature") {
-            std::string_view targetTemperatureStrView = { line.data() + pos + 1 };
-
-            ApplicationState applicationState = parseTemperature(targetTemperatureStrView);
-            if (applicationState == ApplicationState::Success)
-                targetTemperature = std::stod(targetTemperatureStrView.data());
-
-            return applicationState;
-        }
-        else {
-            return ApplicationState::IncorrectConfigParameter;
-        }
-    }
-    else {
-        return ApplicationState::ConfigFileIsNotOpen;
-    }
 }

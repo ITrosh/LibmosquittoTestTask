@@ -4,22 +4,18 @@ project(thermostat_device)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(${PROJECT_NAME}
-    ${CMAKE_SOURCE_DIR}/inc/Utils.h
     ${CMAKE_SOURCE_DIR}/src/Utils.cpp
-    ${CMAKE_SOURCE_DIR}/inc/MosquittoClientWrapper.h
-    ${CMAKE_SOURCE_DIR}/inc/ApplicationState.h
     ${CMAKE_SOURCE_DIR}/src/ApplicationState.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Sensor.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Sensor.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Heater.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Heater.h
-)
 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Sensor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Heater.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/inc/
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/
+    ${CMAKE_CURRENT_SOURCE_DIR}/inc/
 )
 
 #add_library(mosquitto SHARED IMPORTED)

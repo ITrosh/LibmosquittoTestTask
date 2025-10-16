@@ -4,9 +4,6 @@
 #include <memory>
 //#include <csignal>
 
-constexpr size_t NUMBER_OF_ARGUMENTS = 3;
-constexpr std::string_view CMD_LINE_SECOND_ARGUMENT = "--set-alarm-temp";
-
 int main(int argc, char** argv) {
 //    std::signal(SIGINT, signal_handler);  // Обработка Ctrl+C
 //    std::signal(SIGTERM, signal_handler); // Обработка сигнала завершения
